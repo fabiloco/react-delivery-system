@@ -5,10 +5,11 @@ import {
 	Typography,
 	Button,
 	IconButton,
+	useTheme,
 } from "@mui/material";
 
-import { Menu } from "@mui/icons-material";
-import { FC } from "react";
+import { Menu, Brightness7, Brightness4  } from "@mui/icons-material";
+import { createContext, FC, useContext } from "react";
 import { Link } from "react-router-dom";
 
 interface Props {
@@ -16,7 +17,13 @@ interface Props {
 	setIsDrawerOpen: (a: boolean) => void;
 };
 
+const ColorModeContext = createContext({ toggleColorMode: () => {} });
+
 export const Navbar: FC<Props> = ({ isDrawerOpen, setIsDrawerOpen }) => {
+	const theme = useTheme();
+  	const colorMode = useContext(ColorModeContext);
+
+
 	return (
 		<Box sx={{ flexGrow: 1 }}>
 			<AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
@@ -44,6 +51,11 @@ export const Navbar: FC<Props> = ({ isDrawerOpen, setIsDrawerOpen }) => {
 							📦 Delivery system
 						</Typography>
 					</Link>
+
+					{/* {theme.palette.mode} mode
+					<IconButton sx={{ ml: 1 }} onClick={colorMode.toggleColorMode} color="inherit">
+						{theme.palette.mode === 'dark' ? <Brightness7 /> : <Brightness4 />}
+					</IconButton> */}
 				</Toolbar>
 			</AppBar>
 		</Box>

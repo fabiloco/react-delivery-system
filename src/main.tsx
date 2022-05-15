@@ -12,7 +12,7 @@ const theme = createTheme({
 		primary: {
 			main: teal[500],
 		},
-
+		mode: "dark"
 	},
 });
 
