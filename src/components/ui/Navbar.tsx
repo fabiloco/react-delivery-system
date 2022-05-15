@@ -1,15 +1,25 @@
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import Typography from "@mui/material/Typography";
-import Button from "@mui/material/Button";
-import IconButton from "@mui/material/IconButton";
-import MenuIcon from "@mui/icons-material/Menu";
+import {
+	AppBar,
+	Box,
+	Toolbar,
+	Typography,
+	Button,
+	IconButton,
+} from "@mui/material";
 
-export const Navbar = () => {
+import { Menu } from "@mui/icons-material";
+import { FC } from "react";
+import { Link } from "react-router-dom";
+
+interface Props {
+	isDrawerOpen: boolean;
+	setIsDrawerOpen: (a: boolean) => void;
+};
+
+export const Navbar: FC<Props> = ({ isDrawerOpen, setIsDrawerOpen }) => {
 	return (
 		<Box sx={{ flexGrow: 1 }}>
-			<AppBar position="static">
+			<AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
 				<Toolbar>
 					<IconButton
 						size="large"
@@ -17,19 +27,25 @@ export const Navbar = () => {
 						color="inherit"
 						aria-label="menu"
 						sx={{ mr: 2 }}
+						onClick={() => setIsDrawerOpen(!isDrawerOpen)}
 					>
-						<MenuIcon />
+						<Menu />
 					</IconButton>
-					<Typography
-						variant="h6"
-						component="div"
-						sx={{ flexGrow: 1 }}
+					<Link
+						to="/"
+						style={{ textDecoration: "none" }}
 					>
-						📦 Delivery system
-					</Typography>
-					<Button color="inherit">Login</Button>
+						<Typography
+							variant="h6"
+							component="div"
+							color="white"
+							sx={{ flexGrow: 1 }}
+						>
+							📦 Delivery system
+						</Typography>
+					</Link>
 				</Toolbar>
 			</AppBar>
 		</Box>
 	);
-}
+};
