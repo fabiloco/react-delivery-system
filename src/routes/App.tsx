@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "../components/layout";
-import { ClientsPage } from "../pages";
+import { ClientsPage, NewClientPage } from "../pages/clients";
 
 function App() {
     return (
@@ -13,13 +13,21 @@ function App() {
 						<Route
 							path="/"
 						/>
+
 						<Route
 							path="/clients"
 							element={<ClientsPage />}
 						/>
+
+						<Route
+							path="/new-client"
+							element={<NewClientPage />}
+						/>
+
 						<Route
 							path="/invoces"
 						/>
+
 						<Route
 							path="/packages"
 						/>

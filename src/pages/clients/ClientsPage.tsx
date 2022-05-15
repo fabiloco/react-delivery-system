@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import {
 	CircularProgress,
 	Container,
@@ -13,13 +15,14 @@ import {
 	TableRow,
 	Typography,
 	Button,
-	Pagination
+	Pagination,
+	Box
 } from "@mui/material";
 
-import { getAllClients } from "../services/ClientService";
-import { IClient } from "../interfaces/Interfaces";
-import { Box } from "@mui/system";
-import { useNavigate } from "react-router-dom";
+import { IClient } from "../../interfaces/Interfaces";
+
+import { getAllClients } from "../../services/ClientService";
+
 
 interface ClientsPageState {
 	items: Array<IClient>;
@@ -49,16 +52,14 @@ export const ClientsPage = () => {
 
 	return (
 		<Container maxWidth="lg">
-			<Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
-				<Typography variant="h3" component="h2">
+			<Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: "28px" }}>
+				<Typography variant="h4" component="h2">
 					Clients
 				</Typography>
 				<div>
 					<Button onClick={() => navigate("/new-client")} variant="contained">Add new client</Button>
 				</div>
 			</Box>
-
-			<Divider sx={{ mt: "4px", mb: "28px" }} />
 
 			{!loading ? (
 				<>
