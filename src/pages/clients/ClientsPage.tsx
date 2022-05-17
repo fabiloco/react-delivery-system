@@ -16,22 +16,35 @@ import {
 	Typography,
 	Button,
 	Pagination,
-	Box
+	Box,
+	Stack,
+	IconButton,
 } from "@mui/material";
+
+import { Delete, Edit } from "@mui/icons-material";
+
+import { useSnackbar } from "notistack";
+
+import { AltertDialog } from "../../shared/AltertDialog";
 
 import { IClient } from "../../interfaces/Interfaces";
 
-import { getAllClients } from "../../services/ClientService";
+import { deleteClient, getAllClients, LIMIT_PER_PAGE } from "../../services/ClientService";
 
+import { getNumberOfPages } from "../../utils";
 
 interface ClientsPageState {
 	items: Array<IClient>;
-	totalPages: number;
 	totalResults: number;
 }
 
 export const ClientsPage = () => {
 	const [actualPage, setActualPage] = useState<number>(1);
+	const [totalPages, setTotalPages] = useState<number>();
+
+	const [clientSelected, setClientSelected] = useState<IClient>();
+
+	const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
 
 	const [clientsPageState, setClientsPageState] =
 		useState<ClientsPageState>();
@@ -40,24 +53,71 @@ export const ClientsPage = () => {
 
 	const navigate = useNavigate();
 
+	const { enqueueSnackbar } = useSnackbar();
+
 	const fetchClients = async () => {
-		const res = await getAllClients(1);
+		const res = await getAllClients(actualPage);
 		setClientsPageState(res);
+		setTotalPages(getNumberOfPages(res.totalResults, LIMIT_PER_PAGE));
 		setLoading(false);
+	};
+
+	const handleOnDelete = async () => {
+		setLoading(true);
+		if(clientSelected) {
+			const res = await deleteClient(clientSelected.id);
+
+			if (res) {
+				enqueueSnackbar(res.message, {
+					variant: "success",
+				});
+			} else {
+				enqueueSnackbar(res.message, {
+					variant: "error",
+				});
+			}
+
+			fetchClients();
+		};
+		setLoading(false);
+	};
+
+	const handleOnClickDeleteBtn = (client: IClient) => {
+		setClientSelected(client);
+		setIsAlertDialogOpen(!isAlertDialogOpen);
 	};
 
 	useEffect(() => {
 		fetchClients();
-	}, []);
+	}, [actualPage]);
+
+	const handleOnChangePage = (
+		event: React.ChangeEvent<unknown>,
+		value: number
+	) => {
+		setActualPage(value);
+	};
 
 	return (
 		<Container maxWidth="lg">
-			<Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: "28px" }}>
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					justifyContent: "space-between",
+					mb: "28px",
+				}}
+			>
 				<Typography variant="h4" component="h2">
 					Clients
 				</Typography>
 				<div>
-					<Button onClick={() => navigate("/new-client")} variant="contained">Add new client</Button>
+					<Button
+						onClick={() => navigate("/new-client")}
+						variant="contained"
+					>
+						Add new client
+					</Button>
 				</div>
 			</Box>
 
@@ -97,6 +157,12 @@ export const ClientsPage = () => {
 									>
 										Address
 									</TableCell>
+									<TableCell
+										align="center"
+										sx={{ fontWeight: "bold" }}
+									>
+										Actions
+									</TableCell>
 								</TableRow>
 							</TableHead>
 							<TableBody>
@@ -130,6 +196,31 @@ export const ClientsPage = () => {
 											<TableCell align="center">
 												{client.address}
 											</TableCell>
+											<TableCell align="center">
+												<Stack
+													direction="row"
+													divider={
+														<Divider
+															orientation="vertical"
+															flexItem
+														/>
+													}
+													spacing={1}
+													justifyContent="center"
+													alignItems="center"
+												>
+													<IconButton aria-label="edit">
+														<Edit />
+													</IconButton>
+													<IconButton
+														aria-label="delete"
+														color="error"
+														onClick={() => handleOnClickDeleteBtn(client)}
+													>
+														<Delete />
+													</IconButton>
+												</Stack>
+											</TableCell>
 										</TableRow>
 									)
 								)}
@@ -151,9 +242,30 @@ export const ClientsPage = () => {
 				</Box>
 			)}
 
-			<Box sx={{ display: "flex", alignItems: "center", width: "full", justifyContent: "center", mt: "16px" }}>
-				<Pagination count={clientsPageState?.totalPages} color="primary" />
+			<Box
+				sx={{
+					display: "flex",
+					alignItems: "center",
+					width: "full",
+					justifyContent: "center",
+					mt: "16px",
+				}}
+			>
+				<Pagination
+					count={totalPages}
+					color="primary"
+					onChange={handleOnChangePage}
+				/>
 			</Box>
+
+			<AltertDialog
+				isOpen={isAlertDialogOpen}
+				toggleIsOpen={setIsAlertDialogOpen}
+				title="Are you sure you want to delete this item?"
+				content="This operation is permanent."
+				agreeBtnText="Delete"
+				action={handleOnDelete}
+			/>
 		</Container>
 	);
 };

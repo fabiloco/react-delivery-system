@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const deliveryApi = axios.create({
-    baseURL: 'https://postgress-app-test.herokuapp.com',
+    baseURL: import.meta.env.VITE_APP_API_KEY,
 });
 
 

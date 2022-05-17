@@ -43,10 +43,16 @@ export const NewClientPage = () => {
 		e.preventDefault();
 		const res = await createNewClient(newClient);
 		if (res) {
-			enqueueSnackbar("Client created!", {
-				variant: "success",
-			});
-			navigate("/clients");
+			if(res.client) {
+				enqueueSnackbar(res.message, {
+					variant: "success",
+				});
+				navigate("/clients");
+			} else {
+				enqueueSnackbar(res.message, {
+					variant: "info",
+				});
+			}
 		} else {
 			enqueueSnackbar("There's something wrong with the data!", {
 				variant: "error",
