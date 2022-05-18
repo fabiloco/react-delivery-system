@@ -21,37 +21,36 @@ import {
 	IconButton,
 } from "@mui/material";
 
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete } from "@mui/icons-material";
 
 import { useSnackbar } from "notistack";
 
 import { AltertDialog } from "../../shared/AltertDialog";
 
-import { IClient } from "../../interfaces/Interfaces";
+import { ITrack } from "../../interfaces/Interfaces";
 
 import {
-	deleteClient,
-	getAllClients,
+	deleteTrack,
+	getAllTracks,
 	LIMIT_PER_PAGE,
-} from "../../services/ClientService";
+} from "../../services/PackageService";
 
 import { getNumberOfPages } from "../../utils";
 
-interface ClientsPageState {
-	items: Array<IClient>;
+interface TracksPageState {
+	items: Array<ITrack>;
 	totalResults: number;
 }
 
-export const ClientsPage = () => {
+export const TracksPage = () => {
 	const [actualPage, setActualPage] = useState<number>(1);
 	const [totalPages, setTotalPages] = useState<number>();
 
-	const [clientSelected, setClientSelected] = useState<IClient>();
+	const [trackSelected, setTrackSelected] = useState<ITrack>();
 
 	const [isAlertDialogOpen, setIsAlertDialogOpen] = useState(false);
 
-	const [clientsPageState, setClientsPageState] =
-		useState<ClientsPageState>();
+	const [tracksPageState, setTracksPageState] = useState<TracksPageState>();
 
 	const [loading, setLoading] = useState(true);
 
@@ -59,17 +58,17 @@ export const ClientsPage = () => {
 
 	const { enqueueSnackbar } = useSnackbar();
 
-	const fetchClients = async () => {
-		const res = await getAllClients(actualPage);
-		setClientsPageState(res);
+	const fetchTracks = async () => {
+		const res = await getAllTracks(actualPage);
+		setTracksPageState(res);
 		setTotalPages(getNumberOfPages(res.totalResults, LIMIT_PER_PAGE));
 		setLoading(false);
 	};
 
 	const handleOnDelete = async () => {
 		setLoading(true);
-		if (clientSelected) {
-			const res = await deleteClient(clientSelected.id);
+		if (trackSelected) {
+			const res = await deleteTrack(trackSelected.id);
 
 			if (res) {
 				enqueueSnackbar(res.message, {
@@ -81,23 +80,18 @@ export const ClientsPage = () => {
 				});
 			}
 
-			fetchClients();
+			fetchTracks();
 		}
 		setLoading(false);
 	};
 
-	const handleOnClickDeleteBtn = (client: IClient) => {
-		setClientSelected(client);
+	const handleOnClickDeleteBtn = (track: ITrack) => {
+		setTrackSelected(track);
 		setIsAlertDialogOpen(!isAlertDialogOpen);
 	};
 
-	const handleOnClickEditBtn = (client: IClient) => {
-		setClientSelected(client);
-		navigate(`/edit-client/${client.id}`);
-	};
-
 	useEffect(() => {
-		fetchClients();
+		fetchTracks();
 	}, [actualPage]);
 
 	const handleOnChangePage = (
@@ -118,14 +112,14 @@ export const ClientsPage = () => {
 				}}
 			>
 				<Typography variant="h4" component="h2">
-					Clients
+					Tracks
 				</Typography>
 				<div>
 					<Button
-						onClick={() => navigate("/new-client")}
+						onClick={() => navigate("/new-track")}
 						variant="contained"
 					>
-						Add new client
+						Add new track
 					</Button>
 				</div>
 			</Box>
@@ -140,31 +134,19 @@ export const ClientsPage = () => {
 										align="center"
 										sx={{ fontWeight: "bold" }}
 									>
-										National ID
+										Origin
 									</TableCell>
 									<TableCell
 										align="center"
 										sx={{ fontWeight: "bold" }}
 									>
-										Firstname
+										Destiny
 									</TableCell>
 									<TableCell
 										align="center"
 										sx={{ fontWeight: "bold" }}
 									>
-										Lastname
-									</TableCell>
-									<TableCell
-										align="center"
-										sx={{ fontWeight: "bold" }}
-									>
-										Zipcode
-									</TableCell>
-									<TableCell
-										align="center"
-										sx={{ fontWeight: "bold" }}
-									>
-										Address
+										Cost
 									</TableCell>
 									<TableCell
 										align="center"
@@ -175,75 +157,57 @@ export const ClientsPage = () => {
 								</TableRow>
 							</TableHead>
 							<TableBody>
-								{clientsPageState?.items.map(
-									(client, index) => (
-										<TableRow
-											key={index}
-											sx={{
-												"&:last-child td, &:last-child th":
-													{
-														border: 0,
-													},
-											}}
+								{tracksPageState?.items.map((track, index) => (
+									<TableRow
+										key={index}
+										sx={{
+											"&:last-child td, &:last-child th":
+												{
+													border: 0,
+												},
+										}}
+									>
+										<TableCell
+											component="th"
+											scope="row"
+											align="center"
 										>
-											<TableCell
-												component="th"
-												scope="row"
-												align="center"
+											{track.origin}
+										</TableCell>
+										<TableCell align="center">
+											{track.destiny}
+										</TableCell>
+										<TableCell align="center">
+											{track.cost}
+										</TableCell>
+										<TableCell align="center">
+											<Stack
+												direction="row"
+												divider={
+													<Divider
+														orientation="vertical"
+														flexItem
+													/>
+												}
+												spacing={1}
+												justifyContent="center"
+												alignItems="center"
 											>
-												{client.nationalId}
-											</TableCell>
-											<TableCell align="center">
-												{client.name}
-											</TableCell>
-											<TableCell align="center">
-												{client.lastName}
-											</TableCell>
-											<TableCell align="center">
-												{client.zipCode}
-											</TableCell>
-											<TableCell align="center">
-												{client.address}
-											</TableCell>
-											<TableCell align="center">
-												<Stack
-													direction="row"
-													divider={
-														<Divider
-															orientation="vertical"
-															flexItem
-														/>
+												<IconButton
+													aria-label="delete"
+													color="error"
+													onClick={() =>
+														handleOnClickDeleteBtn(
+															track
+														)
 													}
-													spacing={1}
-													justifyContent="center"
-													alignItems="center"
 												>
-													<IconButton
-														aria-label="edit"
-														onClick={() =>
-															handleOnClickEditBtn(
-																client
-															)
-														}
-													>
-														<Edit />
-													</IconButton>
-													<IconButton
-														aria-label="delete"
-														color="error"
-														onClick={() =>
-															handleOnClickDeleteBtn(
-																client
-															)
-														}
-													>
-														<Delete />
-													</IconButton>
-												</Stack>
-											</TableCell>
-										</TableRow>
-									)
-								)}
+													<Delete />
+												</IconButton>
+											</Stack>
+										</TableCell>
+									</TableRow>
+								))}
 							</TableBody>
 						</Table>
 					</TableContainer>

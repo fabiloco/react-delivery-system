@@ -23,3 +23,18 @@ export interface IClient {
     zipCode:    number;
     address:    string;
 }
+
+export interface ITrack {
+    id:        string;
+    createdAt: Date;
+    updatedAt: Date;
+    origin:    string;
+    destiny:   string;
+    cost:      number;
+};
+
+export interface INewTrack {
+    origin:  string;
+    destiny: string;
+    cost:    number;
+};
