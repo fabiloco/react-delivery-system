@@ -87,6 +87,11 @@ export const ClientsPage = () => {
 		setIsAlertDialogOpen(!isAlertDialogOpen);
 	};
 
+	const handleOnClickEditBtn = (client: IClient) => {
+		setClientSelected(client);
+		navigate(`/edit-client/${client.id}`);
+	};
+
 	useEffect(() => {
 		fetchClients();
 	}, [actualPage]);
@@ -209,7 +214,10 @@ export const ClientsPage = () => {
 													justifyContent="center"
 													alignItems="center"
 												>
-													<IconButton aria-label="edit">
+													<IconButton
+														aria-label="edit"
+														onClick={() => handleOnClickEditBtn(client)}
+													>
 														<Edit />
 													</IconButton>
 													<IconButton

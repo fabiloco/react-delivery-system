@@ -1,6 +1,6 @@
-import { ChangeEvent, FormEvent, useState } from "react";
+import { ChangeEvent, FormEvent, useEffect, useState } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import {
 	Box,
@@ -15,23 +15,43 @@ import {
 
 import { useSnackbar } from "notistack";
 
-import { INewClient } from "../../interfaces/Interfaces";
-import { createNewClient } from "../../services/ClientService";
+import { IEditClient } from "../../interfaces/Interfaces";
 
-export const NewClientPage = () => {
-	const [newClient, setNewClient] = useState<INewClient>({
+import { getClientById, updateClient } from "../../services/ClientService";
+
+export const EditClientPage = () => {
+	const [newClient, setNewClient] = useState<IEditClient>({
 		name: "",
 		lastName: "",
 		address: "",
-		nationalId: 0,
 		zipCode: 0,
 	});
 
-	const [loading, setLoading] = useState<boolean>(false);
+	const [nidClient, setNidClient] = useState<string>("");
+
+	const [loading, setLoading] = useState<boolean>(true);
+
+	const { idClient } = useParams();
 
 	const { enqueueSnackbar } = useSnackbar();
 
 	const navigate = useNavigate();
+
+	const fetchOldClient = async () => {
+		setLoading(true);
+		const { client } = await getClientById(idClient as string);
+
+		setNidClient(client.nationalId);
+
+		setNewClient({
+			name: client.name,
+			lastName: client.lastName,
+			address: client.address,
+			zipCode: client.zipCode,
+		});
+
+		setLoading(false);
+	};
 
 	const handleOnChangeInput = (
 		e: ChangeEvent<HTMLTextAreaElement | HTMLInputElement>
@@ -46,7 +66,7 @@ export const NewClientPage = () => {
 		e.preventDefault();
 
 		setLoading(true);
-		const res = await createNewClient(newClient);
+		const res = await updateClient(idClient as string, newClient);
 		if (res) {
 			if (res.client) {
 				enqueueSnackbar(res.message, {
@@ -65,6 +85,10 @@ export const NewClientPage = () => {
 		}
 		setLoading(false);
 	};
+
+	useEffect(() => {
+		fetchOldClient();
+	}, []);
 
 	if (loading) {
 		return (
@@ -92,7 +116,7 @@ export const NewClientPage = () => {
 					}}
 				>
 					<Typography variant="h4" component="h2">
-						New client
+						Edit client
 					</Typography>
 				</Box>
 
@@ -109,6 +133,7 @@ export const NewClientPage = () => {
 									autoComplete="given-name"
 									variant="standard"
 									onChange={(e) => handleOnChangeInput(e)}
+									value={newClient.name}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -121,6 +146,7 @@ export const NewClientPage = () => {
 									autoComplete="family-name"
 									variant="standard"
 									onChange={(e) => handleOnChangeInput(e)}
+									value={newClient.lastName}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -137,7 +163,9 @@ export const NewClientPage = () => {
 									autoComplete="id"
 									fullWidth
 									variant="standard"
+									disabled={true}
 									onChange={(e) => handleOnChangeInput(e)}
+									value={nidClient}
 								/>
 							</Grid>
 							<Grid item xs={12} sm={6}>
@@ -155,6 +183,7 @@ export const NewClientPage = () => {
 									autoComplete="shipping postal-code"
 									variant="standard"
 									onChange={(e) => handleOnChangeInput(e)}
+									value={newClient.zipCode}
 								/>
 							</Grid>
 							<Grid item xs={12}>
@@ -167,6 +196,7 @@ export const NewClientPage = () => {
 									autoComplete="shipping address-line1"
 									variant="standard"
 									onChange={(e) => handleOnChangeInput(e)}
+									value={newClient.address}
 								/>
 							</Grid>
 

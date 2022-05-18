@@ -1,6 +1,6 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "../components/layout";
-import { ClientsPage, NewClientPage } from "../pages/clients";
+import { ClientsPage, EditClientPage, NewClientPage } from "../pages/clients";
 
 function App() {
     return (
@@ -22,6 +22,11 @@ function App() {
 						<Route
 							path="/new-client"
 							element={<NewClientPage />}
+						/>
+
+						<Route
+							path="/edit-client/:idClient"
+							element={<EditClientPage />}
 						/>
 
 						<Route
