@@ -3,9 +3,9 @@ import { INewTrack } from "../interfaces/Interfaces";
 
 export const LIMIT_PER_PAGE = 10;
 
-export const getAllTracks = async (page: number) =>  {
+export const getAllTracks = async (page: number, limit: number = LIMIT_PER_PAGE) =>  {
 	try {
-		const res = await deliveryApi.get(`/packages/tracks?page=${page}&limit=${LIMIT_PER_PAGE}`);
+		const res = await deliveryApi.get(`/packages/tracks?page=${page}&limit=${limit}`);
 		if(res.data.ok) {
 			return res.data;
 		};

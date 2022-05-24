@@ -22,7 +22,7 @@ export const NewTrackPage = () => {
 	const [newTrack, setNewTrack] = useState<INewTrack>({
 		cost: 0,
 		destiny: "",
-		origin: ""
+		origin: "",
 	});
 
 	const [loading, setLoading] = useState<boolean>(false);

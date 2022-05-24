@@ -3,9 +3,9 @@ import { IEditClient, INewClient } from "../interfaces/Interfaces";
 
 export const LIMIT_PER_PAGE = 10;
 
-export const getAllClients = async (page: number) =>  {
+export const getAllClients = async (page: number, limit: number = LIMIT_PER_PAGE) =>  {
 	try {
-		const res = await deliveryApi.get(`/clients?page=${page}&limit=${LIMIT_PER_PAGE}`);
+		const res = await deliveryApi.get(`/clients?page=${page}&limit=${limit}`);
 		if(res.data.ok) {
 			return res.data;
 		};

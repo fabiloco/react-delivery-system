@@ -68,7 +68,7 @@ export const AppDrawer: FC<Props> = ({ isDrawerOpen, drawerWidth }) => {
 
 					<ListItem disablePadding>
 						<ListItemButton
-							onClick={() => navigate("/invoces")}
+							onClick={() => navigate("/invoices")}
 						>
 							<ListItemIcon>
 								<Receipt />

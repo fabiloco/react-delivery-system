@@ -1,6 +1,8 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "../components/layout";
+
 import { ClientsPage, EditClientPage, NewClientPage } from "../pages/clients";
+import { InvoicesPage, NewInvoicePage } from "../pages/invoices";
 import { TracksPage, NewTrackPage } from "../pages/tracks";
 
 function App() {
@@ -24,7 +26,12 @@ function App() {
 
 						<Route path="/new-track" element={<NewTrackPage />} />
 
-						<Route path="/invoces" />
+						<Route path="/invoices" element={<InvoicesPage />} />
+
+						<Route
+							path="/new-invoice"
+							element={<NewInvoicePage />}
+						/>
 					</Route>
 				</Routes>
 			</BrowserRouter>

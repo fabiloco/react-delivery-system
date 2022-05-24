@@ -22,7 +22,7 @@ export interface IClient {
     lastName:   string;
     zipCode:    number;
     address:    string;
-}
+};
 
 export interface ITrack {
     id:        string;
@@ -38,3 +38,24 @@ export interface INewTrack {
     destiny: string;
     cost:    number;
 };
+
+export interface IInvoice {
+    id:        string;
+    createdAt: Date;
+    updatedAt: Date;
+    date:      string;
+    total:     number;
+};
+
+
+export interface INewInvoice {
+    date:     Date;
+    items:    IItem[];
+    clientId: string;
+}
+
+export interface IItem {
+    name:    string;
+    price:   number;
+    trackId: string;
+}
