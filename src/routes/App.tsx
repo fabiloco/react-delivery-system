@@ -1,7 +1,7 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "../components/layout";
 
-import { ClientsPage, EditClientPage, NewClientPage } from "../pages/clients";
+import { ClientsPage, DetailsClientPage, EditClientPage, NewClientPage } from "../pages/clients";
 import { InvoicesPage, NewInvoicePage } from "../pages/invoices";
 import { TracksPage, NewTrackPage } from "../pages/tracks";
 
@@ -20,6 +20,11 @@ function App() {
 						<Route
 							path="/edit-client/:idClient"
 							element={<EditClientPage />}
+						/>
+
+						<Route
+							path="/detail-client/:idClient"
+							element={<DetailsClientPage />}
 						/>
 
 						<Route path="/tracks" element={<TracksPage />} />

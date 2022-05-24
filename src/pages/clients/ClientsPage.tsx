@@ -21,7 +21,7 @@ import {
 	IconButton,
 } from "@mui/material";
 
-import { Delete, Edit } from "@mui/icons-material";
+import { Delete, Description, Edit } from "@mui/icons-material";
 
 import { useSnackbar } from "notistack";
 
@@ -94,6 +94,11 @@ export const ClientsPage = () => {
 	const handleOnClickEditBtn = (client: IClient) => {
 		setClientSelected(client);
 		navigate(`/edit-client/${client.id}`);
+	};
+
+	const handleOnClickDetailsBtn = (client: IClient) => {
+		setClientSelected(client);
+		navigate(`/detail-client/${client.id}`);
 	};
 
 	useEffect(() => {
@@ -219,7 +224,19 @@ export const ClientsPage = () => {
 													alignItems="center"
 												>
 													<IconButton
+														aria-label="details"
+														onClick={() =>
+															handleOnClickDetailsBtn(
+																client
+															)
+														}
+													>
+														<Description />
+													</IconButton>
+
+													<IconButton
 														aria-label="edit"
+														color="primary"
 														onClick={() =>
 															handleOnClickEditBtn(
 																client

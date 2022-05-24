@@ -24,6 +24,18 @@ export interface IClient {
     address:    string;
 };
 
+export interface IClientWithInvoices {
+	id:         string;
+    createdAt:  Date;
+    updatedAt:  Date;
+    name:       string;
+    nationalId: number;
+    lastName:   string;
+    zipCode:    number;
+    address:    string;
+    invoices:   IInvoice[];
+};
+
 export interface ITrack {
     id:        string;
     createdAt: Date;
