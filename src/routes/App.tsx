@@ -1,8 +1,17 @@
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import { Layout } from "../components/layout";
 
-import { ClientsPage, DetailsClientPage, EditClientPage, NewClientPage } from "../pages/clients";
-import { InvoicesPage, NewInvoicePage } from "../pages/invoices";
+import {
+	ClientsPage,
+	DetailsClientPage,
+	EditClientPage,
+	NewClientPage,
+} from "../pages/clients";
+import {
+	DetailsInvoicePage,
+	InvoicesPage,
+	NewInvoicePage,
+} from "../pages/invoices";
 import { TracksPage, NewTrackPage } from "../pages/tracks";
 
 function App() {
@@ -32,6 +41,11 @@ function App() {
 						<Route path="/new-track" element={<NewTrackPage />} />
 
 						<Route path="/invoices" element={<InvoicesPage />} />
+
+						<Route
+							path="/detail-invoice/:idInvoice"
+							element={<DetailsInvoicePage />}
+						/>
 
 						<Route
 							path="/new-invoice"

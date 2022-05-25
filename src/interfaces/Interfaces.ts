@@ -59,7 +59,6 @@ export interface IInvoice {
     total:     number;
 };
 
-
 export interface INewInvoice {
     date:     Date;
     items:    IItem[];
@@ -70,4 +69,23 @@ export interface IItem {
     name:    string;
     price:   number;
     trackId: string;
+}
+
+
+export interface IInvoiceWithClientsAndPackages {
+    id:        string;
+    createdAt: Date;
+    updatedAt: Date;
+    date:      Date;
+    total:     number;
+    packages:  IPackage[];
+    client:    IClient;
+}
+
+export interface IPackage {
+    id:        string;
+    createdAt: Date;
+    updatedAt: Date;
+    name:      string;
+    price:     number;
 }

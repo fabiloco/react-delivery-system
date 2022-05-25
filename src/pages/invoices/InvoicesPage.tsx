@@ -21,7 +21,7 @@ import {
 	IconButton,
 } from "@mui/material";
 
-import { Delete } from "@mui/icons-material";
+import { Delete, Description } from "@mui/icons-material";
 
 import { useSnackbar } from "notistack";
 
@@ -85,9 +85,14 @@ export const InvoicesPage = () => {
 		setLoading(false);
 	};
 
-	const handleOnClickDeleteBtn = (invoce: IInvoice) => {
-		setInvoiceSelected(invoce);
+	const handleOnClickDeleteBtn = (invoice: IInvoice) => {
+		setInvoiceSelected(invoice);
 		setIsAlertDialogOpen(!isAlertDialogOpen);
+	};
+
+	const handleOnClickDetailsBtn = (invoice: IInvoice) => {
+		setInvoiceSelected(invoice);
+		navigate(`/detail-invoice/${invoice.id}`);
 	};
 
 	useEffect(() => {
@@ -185,6 +190,17 @@ export const InvoicesPage = () => {
 													justifyContent="center"
 													alignItems="center"
 												>
+													<IconButton
+														aria-label="details"
+														onClick={() =>
+															handleOnClickDetailsBtn(
+																invoce
+															)
+														}
+													>
+														<Description />
+													</IconButton>
+
 													<IconButton
 														aria-label="delete"
 														color="error"

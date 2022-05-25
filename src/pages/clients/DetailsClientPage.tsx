@@ -179,59 +179,57 @@ export const DetailsClientPage = () => {
 							<Grid
 								item
 								xs={12}
-								sm={6}
 								sx={{ display: "flex", alignItems: "center" }}
 							>
 								<Typography variant="h6">Invoices</Typography>
 							</Grid>
 
-							<Grid
-								item
-								xs={12}
-								sm={6}
-								sx={{ display: "flex", alignItems: "center" }}
-							></Grid>
-
-							<Grid item xs={12}>
-								<List sx={{ marginTop: -2 }}>
-									{client.invoices.map((item, index) => {
-										return (
-											<ListItem
-												disablePadding
-												key={index}
-											>
-												<ListItemButton
-													onClick={(e) =>
-														navigate(
-															`/detail-invoice/${item.id}`
-														)
-													}
-												>
-													<ListItemText>
-														<Box
-															sx={{
-																display: "flex",
-																justifyContent:
-																	"space-between",
-															}}
+							{
+								client.invoices.length > 0 ? (
+									<Grid item xs={12}>
+										<List sx={{ marginTop: -2 }}>
+											{client.invoices.map((item, index) => {
+												return (
+													<ListItem
+														disablePadding
+														key={index}
+													>
+														<ListItemButton
+															onClick={(e) =>
+																navigate(
+																	`/detail-invoice/${item.id}`
+																)
+															}
 														>
-															<Typography>
-																{index + 1}.
-																Date:{" "}
-																{item.date}
-															</Typography>
-															<Typography>
-																Total: $
-																{item.total}
-															</Typography>
-														</Box>
-													</ListItemText>
-												</ListItemButton>
-											</ListItem>
-										);
-									})}
-								</List>
-							</Grid>
+															<ListItemText>
+																<Box
+																	sx={{
+																		display: "flex",
+																		justifyContent:
+																			"space-between",
+																	}}
+																>
+																	<Typography>
+																		{index + 1}.
+																		Date:{" "}
+																		{item.date}
+																	</Typography>
+																	<Typography>
+																		Total: $
+																		{item.total}
+																	</Typography>
+																</Box>
+															</ListItemText>
+														</ListItemButton>
+													</ListItem>
+												);
+											})}
+										</List>
+									</Grid>
+								) : (
+									<Typography sx={{ ml: 3, mt: 1 }} color="GrayText">The client doesnt have invoices.</Typography>
+								)
+							}
 
 							<Grid item xs={12} sm={6}>
 								<Button

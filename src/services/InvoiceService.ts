@@ -14,6 +14,17 @@ export const getAllInvoices = async (page: number) =>  {
 	};
 };
 
+export const getInvoiceById = async (id: string) =>  {
+	try {
+		const res = await deliveryApi.get(`/invoices/${id}`);
+		if(res.data.ok) {
+			return res.data;
+		};
+	} catch(e) {
+		console.log("Error fetching invoice by id", e);
+	};
+};
+
 export const deleteInvoice = async (invoiceId: string) =>  {
 	try {
 		const res = await deliveryApi.delete(`/invoices/${invoiceId}`);
